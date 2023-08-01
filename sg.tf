@@ -4,14 +4,6 @@ resource "aws_security_group" "allows_rabbitmq" {
   vpc_id      = data.terraform_remote_state.vpc.outputs.VPC_ID
 
   ingress {
-    description = "ssh from VPC"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = [data.terraform_remote_state.vpc.outputs.VPC_CIDR , data.terraform_remote_state.vpc.outputs.DEFAULT_VPC_CIDR]
-  }
-
-  ingress {
     description = "rabbitmq from VPC"
     from_port   = 5672
     to_port     = 5672
@@ -30,7 +22,7 @@ resource "aws_security_group" "allows_rabbitmq" {
   egress {
     from_port   = 0
     to_port     = 0
-    protocol    = "-1"           # -1 which icludes all traffic
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -38,3 +30,12 @@ resource "aws_security_group" "allows_rabbitmq" {
     Name = "roboshop-${var.ENV}-rabbitmq-sg"
   }
 }
+
+/* 
+  ingress {
+    description = "ssh from VPC"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [data.terraform_remote_state.vpc.outputs.VPC_CIDR , data.terraform_remote_state.vpc.outputs.DEFAULT_VPC_CIDR]
+  } */
