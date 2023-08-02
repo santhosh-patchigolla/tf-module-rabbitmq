@@ -3,6 +3,15 @@ resource "aws_security_group" "allows_rabbitmq" {
   description = "Allows Only RabbitMQ Traffic"
   vpc_id      = data.terraform_remote_state.vpc.outputs.VPC_ID
 
+    ingress {
+    description = "ssh from VPC"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = [data.terraform_remote_state.vpc.outputs.VPC_CIDR , data.terraform_remote_state.vpc.outputs.DEFAULT_VPC_CIDR]
+  }
+
+
   ingress {
     description = "rabbitmq from VPC"
     from_port   = 5672
@@ -31,11 +40,4 @@ resource "aws_security_group" "allows_rabbitmq" {
   }
 }
 
-/* 
-  ingress {
-    description = "ssh from VPC"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = [data.terraform_remote_state.vpc.outputs.VPC_CIDR , data.terraform_remote_state.vpc.outputs.DEFAULT_VPC_CIDR]
-  } */
+
