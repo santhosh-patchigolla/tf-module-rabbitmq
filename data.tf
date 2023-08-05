@@ -14,3 +14,11 @@ data "aws_ami" "image" {                // using this we can fetch the latest AM
   name_regex       = "ansible-lab-image"
   owners           = ["self"]                   // used self because this {ansible-lab-image} ami is in my account if it is other than your account you can remove the self once.
 }
+
+data "aws_secretsmanager_secret" "secrets" {
+  name = "robot/secrets"
+}
+
+data "aws_secretsmanager_secret_version" "secret_version" {
+  secret_id = data.aws_secretsmanager_secret.secrets.id
+}
